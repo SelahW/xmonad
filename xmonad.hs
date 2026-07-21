@@ -13,6 +13,7 @@ import XMonad.Hooks.ManageDocks (avoidStruts)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
+import qualified XMonad.StackSet as W
 
 main :: IO ()
 main = xmonad $ ewmh def
@@ -29,7 +30,10 @@ main = xmonad $ ewmh def
     , ("M-d",        spawn "rofi -show combi -modes combi -combi-modes window#drun")
     , ("M-p",        unGrab *> spawn "scrot -s")
     , ("M-b",        spawn "firefox")
+    , ("M-S-t",      withFocused $ windows . W.sink)
     ]
+
+focusFollowsMouse = False
 
 myWorkspaces :: [String]
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
