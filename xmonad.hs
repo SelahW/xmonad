@@ -18,6 +18,7 @@ import qualified XMonad.StackSet as W
 main :: IO ()
 main = xmonad $ ewmh def
     { modMask = mod4Mask -- Rebind Mod to Super
+    , focusFollowsMouse = False
     , layoutHook = myLayout
     } `additionalKeysP`
     [ ("M-<Delete>", spawn "xscreensaver-command -lock")
@@ -31,9 +32,12 @@ main = xmonad $ ewmh def
     , ("M-p",        unGrab *> spawn "scrot -s")
     , ("M-b",        spawn "firefox")
     , ("M-S-t",      withFocused $ windows . W.sink)
+    , ("M-w",        screenWorkspace 1 >>= flip whenJust (windows . W.view))
+    , ("M-e",        screenWorkspace 0 >>= flip whenJust (windows . W.view))
+    , ("M-S-w",      screenWorkspace 1 >>= flip whenJust (windows . W.shift))
+    , ("M-S-e",      screenWorkspace 0 >>= flip whenJust (windows . W.shift))
     ]
 
-focusFollowsMouse = False
 
 myWorkspaces :: [String]
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
