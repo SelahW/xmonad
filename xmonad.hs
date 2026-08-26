@@ -1,6 +1,7 @@
 import XMonad
 
 import XMonad.Util.EZConfig
+import XMonad.Util.SpawnOnce (spawnOnce)
 import XMonad.Operations
 import XMonad.Layout.Tabbed
 import XMonad.Actions.PhysicalScreens
@@ -15,10 +16,15 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import qualified XMonad.StackSet as W
 
+fixMonitors :: X ()
+fixMonitors = do
+    spawnOnce "xrandr --output DP-2 --mode 1920x1080 --rate 165 --output DP-1 --mode 1920x1080 --rate 240 --right-of DP-2 --primary"
+
 main :: IO ()
 main = xmonad $ ewmh def
     { modMask = mod4Mask -- Rebind Mod to Super
     , focusFollowsMouse = False
+    , startupHook = fixMonitors
     , layoutHook = myLayout
     } `additionalKeysP`
     [ ("M-<Delete>", spawn "xscreensaver-command -lock")
